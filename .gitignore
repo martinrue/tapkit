@@ -1,0 +1,23 @@
+node_modules/
+dist/
+release/
+.DS_Store
+.artifacts/
+
+# Generated installers, including partial copies and checksums.
+*.dmg
+*.dmg.*
+*.blockmap
+*.app/
+/landing/downloads/
+
+# Local credentials and environment overrides.
+.env
+.env.*
+!.env.example
+*.p12
+*.p8
+
+# Keep reproducible installs, including when a global Git ignore hides lockfiles.
+!/package-lock.json
+!/landing/package-lock.json
