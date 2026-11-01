@@ -1,0 +1,56 @@
+{
+  "name": "tapkit",
+  "version": "0.20.4",
+  "description": "Tiny floating instruments for tapping along.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martinrue/tapkit.git"
+  },
+  "private": true,
+  "type": "module",
+  "main": "dist/main.cjs",
+  "author": "Tapkit",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "node --import tsx scripts/build.ts --watch",
+    "build": "node --import tsx scripts/build.ts",
+    "start": "electron .",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test test/*.test.ts",
+    "test:renderer": "npm run build && node --import tsx scripts/check-renderer.ts",
+    "test:audio": "node --import tsx scripts/check-audio.ts",
+    "feasibility": "node --import tsx scripts/build.ts --feasibility",
+    "package": "npm run build && node --import tsx scripts/package.ts",
+    "test:interactions": "npm run build && node --import tsx scripts/check-interactions.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0",
+    "esbuild": "0.28.2",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  },
+  "build": {
+    "appId": "com.tapkit.app",
+    "productName": "Tapkit",
+    "electronDist": "node_modules/electron/dist",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "ATTRIBUTION.md"
+    ],
+    "mac": {
+      "icon": "assets/icon.png",
+      "category": "public.app-category.music",
+      "identity": "-",
+      "hardenedRuntime": false,
+      "extendInfo": {
+        "LSUIElement": true
+      }
+    }
+  }
+}

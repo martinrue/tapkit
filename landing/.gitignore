@@ -1,0 +1,5 @@
+node_modules/
+.artifacts/
+.DS_Store
+# Keep the local installer out of Git; publish it as a Release asset.
+downloads/

@@ -1,0 +1,50 @@
+name: Publish landing page
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: landing/package-lock.json
+      - name: Install website build tools
+        run: npm ci --prefix landing
+      - name: Check and build website
+        run: |
+          npm run check --prefix landing
+          npm run build --prefix landing
+      - name: Prepare static website files
+        run: |
+          mkdir -p "$RUNNER_TEMP/tapkit-site"
+          cp -R landing/assets landing/styles landing/js "$RUNNER_TEMP/tapkit-site/"
+          cp landing/index.html landing/credits.html landing/config.js landing/ATTRIBUTION.md landing/.nojekyll "$RUNNER_TEMP/tapkit-site/"
+          if [ -f landing/CNAME ]; then cp landing/CNAME "$RUNNER_TEMP/tapkit-site/"; fi
+      - name: Configure Pages
+        uses: actions/configure-pages@v6
+      - name: Upload static website
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: ${{ runner.temp }}/tapkit-site
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v5
