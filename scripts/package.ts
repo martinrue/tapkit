@@ -31,8 +31,8 @@ if (!artifact) throw new Error('Packaging did not produce a DMG.');
 const index = await readFile(indexPath, 'utf8');
 const downloadLink = /(<a\b[^>]*class="[^"]*\brelease-download\b[^"]*"[^>]*href=")[^"]*(")/g;
 const releaseMeta = /(<p class="release-meta">)[^<]*(<\/p>)/g;
-if ([...index.matchAll(downloadLink)].length !== 1 || [...index.matchAll(releaseMeta)].length !== 1) {
-  throw new Error('Unable to locate the landing page download link and version label.');
+if ([...index.matchAll(downloadLink)].length !== 3 || [...index.matchAll(releaseMeta)].length !== 1) {
+  throw new Error('Unable to locate the landing page download links and version label.');
 }
 
 await mkdir(downloads, { recursive: true });
